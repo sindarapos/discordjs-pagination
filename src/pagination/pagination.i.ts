@@ -30,8 +30,8 @@ export interface PaginationOptions {
    /**
     * array of embed messages to paginate
     */
-   embeds: Embed[]
-   
+   embeds: BaseMessageOptions['embeds']
+
    /**
     * customize your buttons!
     */

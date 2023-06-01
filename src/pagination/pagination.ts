@@ -1,17 +1,18 @@
 import {
-   ButtonInteraction,
    ActionRowBuilder,
+   BaseGuildTextChannel,
    ButtonBuilder,
+   ButtonInteraction,
    ComponentType,
    EmbedBuilder,
-   BaseGuildTextChannel,
-   ModalBuilder,
-   TextInputBuilder,
-   TextInputStyle,
+   isJSONEncodable,
    ModalActionRowComponentBuilder,
-   ModalSubmitInteraction
+   ModalBuilder,
+   ModalSubmitInteraction,
+   TextInputBuilder,
+   TextInputStyle
 } from "discord.js";
-import {ButtonTypes, ButtonStyles, ButtonsTypes, PaginationOptions} from "./pagination.i";
+import {ButtonStyles, ButtonsTypes, ButtonTypes, PaginationOptions} from "./pagination.i";
 
 const defaultEmojis = {
    first: "⬅️",
@@ -91,8 +92,10 @@ export const pagination = async (options: PaginationOptions) => {
    ]
    
    const changeFooter = () => {
-      const embed = embeds[currentPage - 1];
-      const embedJSON = embed.toJSON();
+      let embedJSON = embeds[currentPage - 1];
+      if(isJSONEncodable(embedJSON)) {
+         embedJSON = embedJSON?.toJSON();
+      }
       const newEmbed = new EmbedBuilder(embedJSON);
       if (Object.prototype.hasOwnProperty.call(embedJSON, 'footer')) {
          return newEmbed.setFooter({
